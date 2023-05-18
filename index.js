@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/users.js';
 import memeRoutes from './routes/memes.js';
 import cors from 'cors';
+import http from 'http';
+import fs from 'fs';
 
 //middleware
 const app = express();
@@ -28,5 +30,34 @@ mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true})
   .catch((err) => {
     console.error(err);
 });
+  
+http.createServer(function (req, res) {
+res.writeHead(200, { 'Content-Type': 'text/html' });
+var url = req.url;
+if (url === "/") {
+    fs.readFile("head.html", function (err, pgres) {
+        if (err)
+            res.write("HEAD.HTML NOT FOUND");
+        else {
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.write(pgres);
+            res.end();
+        }
+    });
+}
+else if (url === "/tailPage") {
+    fs.readFile("tail.html", function (err, pgres) {
+        if (err)
+            res.write("TAIL.HTML NOT FOUND");
+        else {
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.write(pgres);
+            res.end();
+        }
+    });
+}
+  
+}).listen(process.env.PORT, () => {
+  console.log(`Server is running on http://localhost:${process.env.PORT}`)
+});
 
-app.listen(process.env.PORT, () => console.log(`Server is running on http://localhost:${process.env.PORT}`));
