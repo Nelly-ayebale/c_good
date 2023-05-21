@@ -1,12 +1,6 @@
 import express from 'express';
 import axios from 'axios';
 import cors from 'cors';
-import { createReadStream } from 'fs';
-import path from 'path';
-import fs from 'fs';
-import mime from 'mime';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
 import Meme from '../models/Meme.js';
 import User from '../models/User.js';
 
